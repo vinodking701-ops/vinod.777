@@ -1,2 +1,70 @@
-# Auto detect text files and perform LF normalization
+#import speech_recognition as sr
+import pyttsx3
+import datetime
+import wikipedia
+
+# Initialize engine
+engine = pyttsx3.init()
+engine.setProperty("rate", 170)
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def take_command():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        r.pause_threshold = 1
+        audio = r.listen(source)
+
+    try:
+        print("Recognizing...")
+        command = r.recognize_google(audio, language="en-in")
+        print(f"You said: {command}")
+    except:
+        speak("Sorry, I didn't understand. Say again.")
+        return ""
+    return command.lower()
+
+def wish():
+    hour = int(datetime.datetime.now().hour)
+    if hour < 12:
+        speak("Good morning!")
+    elif hour < 18:
+        speak("Good afternoon!")
+    else:
+        speak("Good evening!")
+    speak("I am Jarvis. How can I help you?")
+
+# MAIN PROGRAM
+wish()
+
+while True:
+    query = take_command()
+
+    if "time" in query:
+        time = datetime.datetime.now().strftime("%I:%M %p")
+        speak(f"The time is {time}")
+
+    elif "date" in query:
+        date = datetime.datetime.now().strftime("%d %B %Y")
+        speak(f"Today's date is {date}")
+
+    elif "wikipedia" in query:
+        speak("Searching on Wikipedia...")
+        topic = query.replace("wikipedia", "")
+        try:
+            info = wikipedia.summary(topic, sentences=2)
+            speak(info)
+        except:
+            speak("Sorry, I couldn't find information.")
+
+    elif "stop" in query or "exit" in query:
+        speak("Goodbye!")
+        break
+
+    elif query != "":
+        speak("Sorry, I don't know that command yet.")
+ Auto detect text files and perform LF normalization
 * text=auto
