@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Car Game</title>
+    <style>
+        body {
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #gameArea {
+            background: #444;
+            border: 4px solid #fff;
+            position: relative;
+            width: 400px;
+            height: 600px;
+            overflow: hidden;
+        }
+        .car {
+            position: absolute;
+            width: 60px;
+            height: 120px;
+            background: #ffea00;
+            border-radius: 20px 20px 10px 10px;
+            left: 170px;
+            bottom: 20px;
+            box-shadow: 0 4px 16px #0008;
+            border: 3px solid #fff;
+        }
+        .obstacle {
+            position: absolute;
+            width: 60px;
+            height: 120px;
+            background: #e91e63;
+            border-radius: 20px 20px 10px 10px;
+            left: 0;
+            top: -120px;
+            box-shadow: 0 4px 16px #0008;
+            border: 3px solid #fff;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            font-size: 1.5rem;
+            font-family: Arial, sans-serif;
+            z-index: 10;
+        }
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 2rem;
+            font-family: Arial, sans-serif;
+            background: rgba(0,0,0,0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            display: none;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameArea">
+        <div id="score">Score: 0</div>
+        <div class="car" id="playerCar"></div>
+        <div id="gameOver">Game Over<br><button onclick="restartGame()">Restart</button></div>
+    </div>
+    <script>
+        const gameArea = document.getElementById('gameArea');
+        const playerCar = document.getElementById('playerCar');
+        const scoreDisplay = document.getElementById('score');
+        const gameOverDisplay = document.getElementById('gameOver');
+        let carX = 170;
+        let score = 0;
+        let obstacles = [];
+        let gameRunning = true;
+
+        function moveCar(e) {
+            if (!gameRunning) return;
+            if (e.key === "ArrowLeft" && carX > 10) {
+                carX -= 20;
+            }
+            if (e.key === "ArrowRight" && carX < 330) {
+                carX += 20;
+            }
+            playerCar.style.left = carX + "px";
+        }
+
+        function createObstacle() {
+            const obs = document.createElement('div');
+            obs.className = "obstacle";
+            obs.style.left = (Math.floor(Math.random() * 6) * 60) + "px";
+            obs.style.top = "-120px";
+            gameArea.appendChild(obs);
+            obstacles.push(obs);
+        }
+
+        function updateObstacles() {
+            obstacles.forEach((obs, idx) => {
+                let top = parseInt(obs.style.top);
+                obs.style.top = (top + 5) + "px";
+                // Collision detection
+                if (
+                    top + 120 > 480 &&
+                    Math.abs(parseInt(obs.style.left) - carX) < 60
+                ) {
+                    endGame();
+                }
+                // Remove obstacle if out of screen
+                if (top > 600) {
+                    obs.remove();
+                    obstacles.splice(idx, 1);
+                    score++;
+                    scoreDisplay.textContent = "Score: " + score;
+                }
+            });
+        }
+
+        function gameLoop() {
+            if (!gameRunning) return;
+            if (Math.random() < 0.03) createObstacle();
+            updateObstacles();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function endGame() {
+            gameRunning = false;
+            gameOverDisplay.style.display = "block";
+        }
+
+        function restartGame() {
+            obstacles.forEach(obs => obs.remove());
+            obstacles = [];
+            carX = 170;
+            playerCar.style.left = carX + "px";
+            score = 0;
+            scoreDisplay.textContent = "Score: 0";
+            gameOverDisplay.style.display = "none";
+            gameRunning = true;
+            requestAnimationFrame(gameLoop);
+        }
+
+        document.addEventListener('keydown', moveCar);
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

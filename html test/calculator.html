@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- added for proper mobile scaling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #fce4ec 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .calculator {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+            width: 320px;
+            max-width: 92%;
+        }
+        /* responsive tweak for small screens */
+        @media (max-width: 420px){
+          .calculator { width: 92%; padding: 1.25rem; }
+          .display { height: 44px; font-size: 1.6rem; }
+          .buttons button { padding: 0.75rem; font-size: 1rem; }
+        }
+        .display {
+            width: 100%;
+            height: 50px;
+            font-size: 2rem;
+            text-align: right;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.7rem;
+        }
+        .buttons button {
+            padding: 1rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 8px;
+            background: #e0e0e0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .buttons button:hover {
+            background: #bdbdbd;
+        }
+        .buttons .equals {
+            background: #007bff;
+            color: #fff;
+        }
+        .buttons .equals:hover {
+            background: #0056d6;
+            color: #fff;
+        }
+        .buttons .clear:hover {
+            background: #c62828;
+            color: #fff;
+        }
+        .buttons .cancel {
+            background: #ffa726;
+            color: #fff;
+        }
+        .buttons .cancel:hover {
+            background: #fb8c00;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" class="display" id="display" readonly>
+        <div class="buttons">
+            <button onclick="append('7')">7</button>
+            <button onclick="append('8')">8</button>
+            <button onclick="append('9')">9</button>
+            <button onclick="append('/')">÷</button>
+
+            <button onclick="append('4')">4</button>
+            <button onclick="append('5')">5</button>
+            <button onclick="append('6')">6</button>
+            <button onclick="append('*')">×</button>
+
+            <button onclick="append('1')">1</button>
+            <button onclick="append('2')">2</button>
+            <button onclick="append('3')">3</button>
+            <button onclick="append('-')">−</button>
+
+            <button onclick="append('0')">0</button>
+            <button onclick="append('.')">.</button>
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button onclick="append('+')">+</button>
+
+            <button class="equals" style="grid-column: span 3;" onclick="calculate()">=</button>
+            <button class="cancel" onclick="cancelLast()">Cancel</button>
+        </div>
+    </div>
+    <script>
+        const display = document.getElementById('display');
+
+        // append with simple validation:
+        function append(char) {
+            // prevent leading operator (except minus)
+            if (display.value === '' && /[+*/]/.test(char)) return;
+
+            // prevent multiple dots in the current number segment
+            if (char === '.') {
+                // find last operator position
+                const lastOp = Math.max(
+                    display.value.lastIndexOf('+'),
+                    display.value.lastIndexOf('-'),
+                    display.value.lastIndexOf('*'),
+                    display.value.lastIndexOf('/')
+                );
+                const lastSegment = display.value.slice(lastOp + 1);
+                if (lastSegment.includes('.')) return;
+            }
+
+            display.value += char;
+        }
+
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        function calculate() {
+            try {
+                // only allow digits, operators, parentheses, spaces and dot
+                if (!/^[0-9+\-*/().\s]+$/.test(display.value) || display.value.trim() === '') {
+                    display.value = 'Error';
+                    return;
+                }
+                // evaluate safely (basic). For production, replace with a proper expression parser.
+                // eslint-disable-next-line no-eval
+                display.value = String(eval(display.value));
+            } catch (err) {
+                display.value = 'Error';
+            }
+        }
+
+        function cancelLast() {
+            display.value = display.value.slice(0, -1);
+        }
+    </script>
+</body>
+</html>
