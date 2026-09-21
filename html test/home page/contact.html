@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact | Vinod</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <a href="index.html" class="logo">
+            VINOD<span>.</span>
+        </a>
+
+        <nav>
+
+            <a href="index.html">Home</a>
+
+            <a href="about.html">About</a>
+
+            <a href="skills.html">Skills</a>
+
+            <a href="services.html">Services</a>
+
+            <a href="projects.html">Projects</a>
+
+            <a href="contact.html" class="active">
+                Contact
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- CONTACT -->
+
+    <main>
+
+        <section class="page-section">
+
+            <div class="page-heading">
+
+                <p>GET IN TOUCH</p>
+
+                <h1>
+                    Contact <span>Me</span>
+                </h1>
+
+            </div>
+
+
+            <div class="contact-container">
+
+
+                <div class="contact-info">
+
+                    <h2>
+                        Let's work together.
+                    </h2>
+
+                    <p>
+                        Have a project or opportunity?
+                        Send me a message and let's talk.
+                    </p>
+
+
+                    <div class="contact-item">
+
+                        <div class="contact-icon">
+                            📧
+                        </div>
+
+                        <div>
+                            <small>Email</small>
+                            <p>yourmail@example.com</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <div class="contact-icon">
+                            📍
+                        </div>
+
+                        <div>
+                            <small>Location</small>
+                            <p>India</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="contact-item">
+
+                        <div class="contact-icon">
+                            💼
+                        </div>
+
+                        <div>
+                            <small>Availability</small>
+                            <p>Open to opportunities</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="contact-form">
+
+                    <form id="contactForm">
+
+                        <input
+                            type="text"
+                            placeholder="Your Name"
+                            required
+                        >
+
+                        <input
+                            type="email"
+                            placeholder="Your Email"
+                            required
+                        >
+
+                        <input
+                            type="text"
+                            placeholder="Subject"
+                            required
+                        >
+
+                        <textarea
+                            placeholder="Write your message..."
+                            required
+                        ></textarea>
+
+                        <button
+                            type="submit"
+                            class="btn primary">
+
+                            Send Message 🚀
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <div class="social-links">
+
+                <a href="#" class="social">GH</a>
+
+                <a href="#" class="social">in</a>
+
+                <a href="#" class="social">IG</a>
+
+                <a href="#" class="social">X</a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 <span>Vinod</span>. All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        document
+            .getElementById("contactForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                alert(
+                    "Thank you! Your message has been received."
+                );
+
+                this.reset();
+
+            });
+
+    </script>
+
+</body>
+
+</html>
