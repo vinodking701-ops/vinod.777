@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ExpenseFlow | Expense Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+    <div class="brand">
+        <div class="brand-icon">₹</div>
+
+        <div>
+            <h2>Expense<span>Flow</span></h2>
+            <small>SMART FINANCE</small>
+        </div>
+    </div>
+
+    <div class="nav-actions">
+
+        <button class="nav-btn" onclick="refreshDashboard()" title="Refresh">
+            ↻
+        </button>
+
+        <button class="profile-btn" onclick="toggleProfile()">
+            VK
+        </button>
+
+        <div class="profile-menu" id="profileMenu">
+
+            <strong>Welcome back</strong>
+
+            <p>Personal Account</p>
+
+            <hr>
+
+            <button onclick="showNotification('Settings opened')">
+                ⚙ Settings
+            </button>
+
+            <button onclick="showNotification('You are already logged in')">
+                ↪ Account
+            </button>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- MAIN -->
+<main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <p class="eyebrow">
+                PERSONAL FINANCE
+            </p>
+
+            <h1>
+                Take control of
+                <span>your money.</span>
+            </h1>
+
+            <p class="hero-text">
+                Track your balance, income and expenses in one clean
+                professional dashboard.
+            </p>
+
+        </div>
+
+
+        <div class="hero-buttons">
+
+            <!-- ADD BALANCE BUTTON -->
+            <button class="balance-btn" onclick="openBalanceModal()">
+                <span>＋</span>
+                Add Balance
+            </button>
+
+            <!-- ADD TRANSACTION BUTTON -->
+            <button class="primary-btn" onclick="openTransactionModal()">
+                <span>＋</span>
+                Add Transaction
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+    <section class="summary-grid">
+
+        <!-- INCOME -->
+        <div class="summary-card income-card">
+
+            <div class="card-top">
+
+                <div>
+                    <p>Total Income</p>
+                    <h2 id="totalIncome">₹0.00</h2>
+                </div>
+
+                <div class="card-icon">
+                    ↗
+                </div>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-fill income-progress"></div>
+            </div>
+
+            <small>
+                Money coming in
+            </small>
+
+        </div>
+
+
+        <!-- EXPENSE -->
+        <div class="summary-card expense-card">
+
+            <div class="card-top">
+
+                <div>
+                    <p>Total Expenses</p>
+                    <h2 id="totalExpense">₹0.00</h2>
+                </div>
+
+                <div class="card-icon">
+                    ↘
+                </div>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-fill expense-progress" id="expenseProgress"></div>
+            </div>
+
+            <small>
+                Money going out
+            </small>
+
+        </div>
+
+
+        <!-- BALANCE -->
+        <div class="summary-card balance-card">
+
+            <div class="card-top">
+
+                <div>
+                    <p>Current Balance</p>
+                    <h2 id="balance">₹0.00</h2>
+                </div>
+
+                <div class="card-icon">
+                    ₹
+                </div>
+
+            </div>
+
+            <div class="balance-status" id="balanceStatus">
+                <span></span>
+                Healthy balance
+            </div>
+
+        </div>
+
+
+        <!-- SAVINGS -->
+        <div class="summary-card saving-card">
+
+            <div class="card-top">
+
+                <div>
+                    <p>Savings Rate</p>
+                    <h2 id="savingRate">0%</h2>
+                </div>
+
+                <div class="card-icon">
+                    %
+                </div>
+
+            </div>
+
+            <div class="mini-chart">
+
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTENT -->
+    <section class="content-grid">
+
+        <!-- TRANSACTIONS -->
+        <div class="panel transactions-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <p class="section-label">
+                        ACTIVITY
+                    </p>
+
+                    <h2>
+                        Recent Transactions
+                    </h2>
+
+                </div>
+
+
+                <div class="filters">
+
+                    <select id="filterType" onchange="renderTransactions()">
+
+                        <option value="all">
+                            All
+                        </option>
+
+                        <option value="income">
+                            Income
+                        </option>
+
+                        <option value="expense">
+                            Expense
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        class="clear-btn"
+                        onclick="clearTransactions()">
+
+                        Clear
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="transactions" id="transactions">
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ₹
+                    </div>
+
+                    <h3>
+                        No transactions yet
+                    </h3>
+
+                    <p>
+                        Add your balance or your first transaction.
+                    </p>
+
+                    <button onclick="openBalanceModal()">
+                        Add Balance
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-column">
+
+
+            <!-- QUICK ADD -->
+            <div class="panel quick-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="section-label">
+                            QUICK ACTION
+                        </p>
+
+                        <h2>
+                            Quick Add
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-buttons">
+
+                    <button onclick="quickAdd('Food', 250)">
+                        <span class="quick-name">
+                            🍔 Food
+                        </span>
+
+                        <span>
+                            ₹250
+                        </span>
+                    </button>
+
+
+                    <button onclick="quickAdd('Transport', 100)">
+                        <span class="quick-name">
+                            🚕 Transport
+                        </span>
+
+                        <span>
+                            ₹100
+                        </span>
+                    </button>
+
+
+                    <button onclick="quickAdd('Shopping', 500)">
+                        <span class="quick-name">
+                            🛍 Shopping
+                        </span>
+
+                        <span>
+                            ₹500
+                        </span>
+                    </button>
+
+
+                    <button onclick="quickAdd('Bills', 1000)">
+                        <span class="quick-name">
+                            💡 Bills
+                        </span>
+
+                        <span>
+                            ₹1,000
+                        </span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- SPENDING -->
+            <div class="panel spending-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="section-label">
+                            BREAKDOWN
+                        </p>
+
+                        <h2>
+                            Spending
+                        </h2>
+
+                    </div>
+
+                    <button
+                        class="more-btn"
+                        onclick="showNotification('Spending details updated')">
+
+                        •••
+
+                    </button>
+
+                </div>
+
+
+                <div class="spending-chart">
+
+                    <div class="donut">
+
+                        <div class="donut-center">
+
+                            <strong id="chartTotal">
+                                ₹0
+                            </strong>
+
+                            <small>
+                                Spent
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="legend">
+
+                        <div>
+                            <span class="dot food"></span>
+                            Food
+                            <strong id="foodAmount">₹0</strong>
+                        </div>
+
+
+                        <div>
+                            <span class="dot transport"></span>
+                            Transport
+                            <strong id="transportAmount">₹0</strong>
+                        </div>
+
+
+                        <div>
+                            <span class="dot shopping"></span>
+                            Shopping
+                            <strong id="shoppingAmount">₹0</strong>
+                        </div>
+
+
+                        <div>
+                            <span class="dot bills"></span>
+                            Bills
+                            <strong id="billsAmount">₹0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div>
+            <strong>
+                ExpenseFlow
+            </strong>
+
+            <span>
+                Personal finance dashboard
+            </span>
+        </div>
+
+
+        <div>
+            <span>
+                Data saved automatically in your browser
+            </span>
+        </div>
+
+    </footer>
+
+</main>
+
+
+<!-- TRANSACTION MODAL -->
+<div class="modal-overlay" id="transactionModal">
+
+    <div class="modal">
+
+        <button
+            class="close-modal"
+            onclick="closeTransactionModal()">
+
+            ×
+
+        </button>
+
+
+        <div class="modal-icon">
+            ₹
+        </div>
+
+
+        <h2>
+            Add Transaction
+        </h2>
+
+
+        <p>
+            Record your income or expense.
+        </p>
+
+
+        <form id="transactionForm">
+
+            <label>
+                Transaction Type
+            </label>
+
+
+            <div class="type-buttons">
+
+                <button
+                    type="button"
+                    class="type-btn"
+                    data-type="expense"
+                    onclick="selectType('expense')">
+
+                    Expense
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="type-btn"
+                    data-type="income"
+                    onclick="selectType('income')">
+
+                    Income
+
+                </button>
+
+            </div>
+
+
+            <label>
+                Description
+            </label>
+
+
+            <input
+                type="text"
+                id="description"
+                placeholder="e.g. Grocery shopping"
+                required
+            >
+
+
+            <label>
+                Amount
+            </label>
+
+
+            <div class="amount-input">
+
+                <span>₹</span>
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="0.00"
+                    min="1"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+
+            <label>
+                Category
+            </label>
+
+
+            <select id="category">
+
+                <option value="Food">
+                    🍔 Food
+                </option>
+
+                <option value="Transport">
+                    🚕 Transport
+                </option>
+
+                <option value="Shopping">
+                    🛍 Shopping
+                </option>
+
+                <option value="Bills">
+                    💡 Bills
+                </option>
+
+                <option value="Salary">
+                    💰 Salary
+                </option>
+
+                <option value="Other">
+                    📦 Other
+                </option>
+
+            </select>
+
+
+            <label>
+                Date
+            </label>
+
+
+            <input
+                type="date"
+                id="date"
+                required
+            >
+
+
+            <button
+                class="submit-btn"
+                type="submit">
+
+                Add Transaction
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ADD BALANCE MODAL -->
+<div class="modal-overlay" id="balanceModal">
+
+    <div class="modal">
+
+        <button
+            class="close-modal"
+            onclick="closeBalanceModal()">
+
+            ×
+
+        </button>
+
+
+        <div class="modal-icon balance-modal-icon">
+            ₹
+        </div>
+
+
+        <h2>
+            Add Balance
+        </h2>
+
+
+        <p>
+            Add money to your account balance.
+        </p>
+
+
+        <form id="balanceForm">
+
+            <label>
+                Balance Amount
+            </label>
+
+
+            <div class="amount-input">
+
+                <span>₹</span>
+
+                <input
+                    type="number"
+                    id="balanceAmount"
+                    placeholder="Enter amount"
+                    min="1"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+
+            <label>
+                Description
+            </label>
+
+
+            <input
+                type="text"
+                id="balanceDescription"
+                value="Balance Added"
+                placeholder="e.g. Cash deposit"
+                required
+            >
+
+
+            <label>
+                Date
+            </label>
+
+
+            <input
+                type="date"
+                id="balanceDate"
+                required
+            >
+
+
+            <button
+                class="submit-btn"
+                type="submit">
+
+                ＋ Add Balance
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- NOTIFICATION -->
+<div class="notification" id="notification">
+
+    <div class="notification-icon">
+        ✓
+    </div>
+
+
+    <div>
+
+        <strong>
+            Success
+        </strong>
+
+        <p id="notificationText">
+            Done
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   DATA
+========================================= */
+
+let transactions =
+    JSON.parse(
+        localStorage.getItem("expenseFlowTransactions")
+    ) || [];
+
+
+let selectedType = "expense";
+
+
+/* =========================================
+   INITIAL DATE
+========================================= */
+
+const today =
+    new Date().toISOString().split("T")[0];
+
+document.getElementById("date").value = today;
+
+document.getElementById("balanceDate").value = today;
+
+
+/* =========================================
+   TRANSACTION MODAL
+========================================= */
+
+function openTransactionModal() {
+
+    document
+        .getElementById("transactionModal")
+        .classList.add("show");
+
+    selectType("expense");
+
+    setTimeout(() => {
+
+        document
+            .getElementById("description")
+            .focus();
+
+    }, 200);
+}
+
+
+function closeTransactionModal() {
+
+    document
+        .getElementById("transactionModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   BALANCE MODAL
+========================================= */
+
+function openBalanceModal() {
+
+    document
+        .getElementById("balanceModal")
+        .classList.add("show");
+
+    document
+        .getElementById("balanceAmount")
+        .value = "";
+
+    document
+        .getElementById("balanceDate")
+        .value = today;
+
+    setTimeout(() => {
+
+        document
+            .getElementById("balanceAmount")
+            .focus();
+
+    }, 200);
+
+}
+
+
+function closeBalanceModal() {
+
+    document
+        .getElementById("balanceModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================
+   CLOSE MODAL BY OUTSIDE CLICK
+========================================= */
+
+document
+    .getElementById("transactionModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeTransactionModal();
+
+        }
+
+    });
+
+
+document
+    .getElementById("balanceModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeBalanceModal();
+
+        }
+
+    });
+
+
+/* =========================================
+   TRANSACTION TYPE
+========================================= */
+
+function selectType(type) {
+
+    selectedType = type;
+
+    document
+        .querySelectorAll(".type-btn")
+        .forEach(button => {
+
+            button.classList.remove("active");
+
+        });
+
+
+    const selectedButton =
+        document.querySelector(
+            `[data-type="${type}"]`
+        );
+
+
+    if (selectedButton) {
+
+        selectedButton.classList.add("active");
+
+    }
+
+}
+
+
+/* =========================================
+   ADD TRANSACTION
+========================================= */
+
+document
+    .getElementById("transactionForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const description =
+            document
+                .getElementById("description")
+                .value
+                .trim();
+
+
+        const amount =
+            Number(
+                document
+                    .getElementById("amount")
+                    .value
+            );
+
+
+        const category =
+            document
+                .getElementById("category")
+                .value;
+
+
+        const date =
+            document
+                .getElementById("date")
+                .value;
+
+
+        if (
+            !description ||
+            !amount ||
+            amount <= 0 ||
+            !date
+        ) {
+
+            showNotification(
+                "Please enter valid details"
+            );
+
+            return;
+
+        }
+
+
+        const transaction = {
+
+            id: Date.now(),
+
+            type: selectedType,
+
+            description: description,
+
+            amount: amount,
+
+            category: category,
+
+            date: date
+
+        };
+
+
+        transactions.unshift(transaction);
+
+        saveTransactions();
+
+        renderTransactions();
+
+        updateDashboard();
+
+        closeTransactionModal();
+
+        document
+            .getElementById("transactionForm")
+            .reset();
+
+        document
+            .getElementById("date")
+            .value = today;
+
+        selectType("expense");
+
+
+        showNotification(
+            selectedType === "income"
+                ? "Income added successfully"
+                : "Expense added successfully"
+        );
+
+    });
+
+
+/* =========================================
+   ADD BALANCE
+========================================= */
+
+document
+    .getElementById("balanceForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const amount =
+            Number(
+                document
+                    .getElementById("balanceAmount")
+                    .value
+            );
+
+
+        const description =
+            document
+                .getElementById("balanceDescription")
+                .value
+                .trim();
+
+
+        const date =
+            document
+                .getElementById("balanceDate")
+                .value;
+
+
+        if (
+            !amount ||
+            amount <= 0 ||
+            !description ||
+            !date
+        ) {
+
+            showNotification(
+                "Please enter a valid balance"
+            );
+
+            return;
+
+        }
+
+
+        const balanceTransaction = {
+
+            id: Date.now(),
+
+            type: "income",
+
+            description: description,
+
+            amount: amount,
+
+            category: "Balance",
+
+            date: date
+
+        };
+
+
+        transactions.unshift(
+            balanceTransaction
+        );
+
+
+        saveTransactions();
+
+        renderTransactions();
+
+        updateDashboard();
+
+        closeBalanceModal();
+
+        document
+            .getElementById("balanceForm")
+            .reset();
+
+        document
+            .getElementById("balanceDescription")
+            .value = "Balance Added";
+
+        document
+            .getElementById("balanceDate")
+            .value = today;
+
+
+        showNotification(
+            "₹" +
+            formatMoney(amount) +
+            " balance added successfully"
+        );
+
+    });
+
+
+/* =========================================
+   QUICK ADD EXPENSE
+========================================= */
+
+function quickAdd(category, amount) {
+
+    const transaction = {
+
+        id: Date.now(),
+
+        type: "expense",
+
+        description: category,
+
+        amount: amount,
+
+        category: category,
+
+        date: today
+
+    };
+
+
+    transactions.unshift(transaction);
+
+    saveTransactions();
+
+    renderTransactions();
+
+    updateDashboard();
+
+
+    showNotification(
+        category + " expense added"
+    );
+
+}
+
+
+/* =========================================
+   SAVE
+========================================= */
+
+function saveTransactions() {
+
+    localStorage.setItem(
+        "expenseFlowTransactions",
+        JSON.stringify(transactions)
+    );
+
+}
+
+
+/* =========================================
+   RENDER
+========================================= */
+
+function renderTransactions() {
+
+    const container =
+        document.getElementById(
+            "transactions"
+        );
+
+
+    const filter =
+        document.getElementById(
+            "filterType"
+        ).value;
+
+
+    const filtered =
+        transactions.filter(transaction => {
+
+            if (filter === "all") {
+
+                return true;
+
+            }
+
+            return transaction.type === filter;
+
+        });
+
+
+    if (filtered.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ₹
+                </div>
+
+                <h3>
+                    No transactions found
+                </h3>
+
+                <p>
+                    Add your balance or transaction.
+                </p>
+
+                <button onclick="openBalanceModal()">
+                    Add Balance
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        filtered.map(transaction => {
+
+            const isIncome =
+                transaction.type === "income";
+
+
+            const sign =
+                isIncome ? "+" : "-";
+
+
+            const icon =
+                getCategoryIcon(
+                    transaction.category
+                );
+
+
+            return `
+
+                <div class="transaction-row">
+
+                    <div class="
+                        transaction-icon
+                        ${isIncome ? "income" : ""}
+                    ">
+
+                        ${icon}
+
+                    </div>
+
+
+                    <div class="transaction-info">
+
+                        <strong>
+                            ${escapeHTML(
+                                transaction.description
+                            )}
+                        </strong>
+
+                        <span>
+                            ${escapeHTML(
+                                transaction.category
+                            )}
+                            •
+                            ${formatDate(
+                                transaction.date
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="
+                        transaction-amount
+                        ${isIncome ? "income" : "expense"}
+                    ">
+
+                        ${sign}₹${formatMoney(
+                            transaction.amount
+                        )}
+
+                    </div>
+
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteTransaction(${transaction.id})"
+                        title="Delete">
+
+                        ×
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================================
+   DELETE
+========================================= */
+
+function deleteTransaction(id) {
+
+    transactions =
+        transactions.filter(
+            transaction =>
+                transaction.id !== id
+        );
+
+
+    saveTransactions();
+
+    renderTransactions();
+
+    updateDashboard();
+
+    showNotification(
+        "Transaction deleted"
+    );
+
+}
+
+
+/* =========================================
+   CLEAR ALL
+========================================= */
+
+function clearTransactions() {
+
+    if (transactions.length === 0) {
+
+        showNotification(
+            "There are no transactions"
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete all transactions?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    transactions = [];
+
+    saveTransactions();
+
+    renderTransactions();
+
+    updateDashboard();
+
+    showNotification(
+        "All transactions cleared"
+    );
+
+}
+
+
+/* =========================================
+   UPDATE DASHBOARD
+========================================= */
+
+function updateDashboard() {
+
+    let income = 0;
+
+    let expense = 0;
+
+
+    transactions.forEach(transaction => {
+
+        if (transaction.type === "income") {
+
+            income += transaction.amount;
+
+        } else {
+
+            expense += transaction.amount;
+
+        }
+
+    });
+
+
+    const balance =
+        income - expense;
+
+
+    document
+        .getElementById("totalIncome")
+        .textContent =
+        "₹" + formatMoney(income);
+
+
+    document
+        .getElementById("totalExpense")
+        .textContent =
+        "₹" + formatMoney(expense);
+
+
+    document
+        .getElementById("balance")
+        .textContent =
+        "₹" + formatMoney(balance);
+
+
+    let savingRate = 0;
+
+
+    if (income > 0) {
+
+        savingRate =
+            Math.round(
+                (balance / income) * 100
+            );
+
+    }
+
+
+    savingRate =
+        Math.max(
+            0,
+            Math.min(100, savingRate)
+        );
+
+
+    document
+        .getElementById("savingRate")
+        .textContent =
+        savingRate + "%";
+
+
+    const status =
+        document.getElementById(
+            "balanceStatus"
+        );
+
+
+    if (balance >= 0) {
+
+        status.innerHTML =
+            "<span></span> Healthy balance";
+
+        status.classList.remove(
+            "negative"
+        );
+
+    } else {
+
+        status.innerHTML =
+            "<span></span> Over budget";
+
+        status.classList.add(
+            "negative"
+        );
+
+    }
+
+
+    /* EXPENSE PROGRESS */
+
+    let expensePercentage = 0;
+
+
+    if (income > 0) {
+
+        expensePercentage =
+            Math.min(
+                100,
+                (expense / income) * 100
+            );
+
+    }
+
+
+    document
+        .getElementById("expenseProgress")
+        .style.width =
+        expensePercentage + "%";
+
+
+    updateCategoryBreakdown();
+
+}
+
+
+/* =========================================
+   CATEGORY BREAKDOWN
+========================================= */
+
+function updateCategoryBreakdown() {
+
+    let food = 0;
+
+    let transport = 0;
+
+    let shopping = 0;
+
+    let bills = 0;
+
+
+    transactions.forEach(transaction => {
+
+        if (transaction.type !== "expense") {
+
+            return;
+
+        }
+
+
+        switch (transaction.category) {
+
+            case "Food":
+                food += transaction.amount;
+                break;
+
+            case "Transport":
+                transport += transaction.amount;
+                break;
+
+            case "Shopping":
+                shopping += transaction.amount;
+                break;
+
+            case "Bills":
+                bills += transaction.amount;
+                break;
+
+        }
+
+    });
+
+
+    document
+        .getElementById("foodAmount")
+        .textContent =
+        "₹" + formatMoney(food);
+
+
+    document
+        .getElementById("transportAmount")
+        .textContent =
+        "₹" + formatMoney(transport);
+
+
+    document
+        .getElementById("shoppingAmount")
+        .textContent =
+        "₹" + formatMoney(shopping);
+
+
+    document
+        .getElementById("billsAmount")
+        .textContent =
+        "₹" + formatMoney(bills);
+
+
+    const total =
+        food +
+        transport +
+        shopping +
+        bills;
+
+
+    document
+        .getElementById("chartTotal")
+        .textContent =
+        "₹" + formatMoney(total);
+
+
+    updateDonut(
+        food,
+        transport,
+        shopping,
+        bills,
+        total
+    );
+
+}
+
+
+/* =========================================
+   DONUT CHART
+========================================= */
+
+function updateDonut(
+    food,
+    transport,
+    shopping,
+    bills,
+    total
+) {
+
+    const donut =
+        document.querySelector(".donut");
+
+
+    if (total === 0) {
+
+        donut.style.background =
+            "rgba(255,255,255,0.06)";
+
+        return;
+
+    }
+
+
+    const foodPercent =
+        food / total * 100;
+
+    const transportPercent =
+        transport / total * 100;
+
+    const shoppingPercent =
+        shopping / total * 100;
+
+    const foodEnd =
+        foodPercent;
+
+    const transportEnd =
+        foodEnd + transportPercent;
+
+    const shoppingEnd =
+        transportEnd + shoppingPercent;
+
+
+    donut.style.background = `conic-gradient(
+        var(--green) 0% ${foodEnd}%,
+        var(--cyan) ${foodEnd}% ${transportEnd}%,
+        #8d77ff ${transportEnd}% ${shoppingEnd}%,
+        var(--yellow) ${shoppingEnd}% 100%
+    )`;
+
+}
+
+
+/* =========================================
+   PROFILE
+========================================= */
+
+function toggleProfile() {
+
+    document
+        .getElementById("profileMenu")
+        .classList.toggle("show");
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const menu =
+            document.getElementById(
+                "profileMenu"
+            );
+
+        const profile =
+            document.querySelector(
+                ".profile-btn"
+            );
+
+
+        if (
+            !menu.contains(event.target) &&
+            !profile.contains(event.target)
+        ) {
+
+            menu.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   REFRESH
+========================================= */
+
+function refreshDashboard() {
+
+    renderTransactions();
+
+    updateDashboard();
+
+    showNotification(
+        "Dashboard refreshed"
+    );
+
+}
+
+
+/* =========================================
+   NOTIFICATION
+========================================= */
+
+function showNotification(message) {
+
+    const notification =
+        document.getElementById(
+            "notification"
+        );
+
+
+    document
+        .getElementById(
+            "notificationText"
+        )
+        .textContent =
+        message;
+
+
+    notification.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        window.notificationTimer
+    );
+
+
+    window.notificationTimer =
+        setTimeout(() => {
+
+            notification.classList.remove(
+                "show"
+            );
+
+        }, 2500);
+
+}
+
+
+/* =========================================
+   CATEGORY ICON
+========================================= */
+
+function getCategoryIcon(category) {
+
+    const icons = {
+
+        Food: "🍔",
+
+        Transport: "🚕",
+
+        Shopping: "🛍",
+
+        Bills: "💡",
+
+        Salary: "💰",
+
+        Balance: "💰",
+
+        Other: "📦"
+
+    };
+
+
+    return icons[category] || "₹";
+
+}
+
+
+/* =========================================
+   MONEY FORMAT
+========================================= */
+
+function formatMoney(amount) {
+
+    return Number(amount).toLocaleString(
+        "en-IN",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    );
+
+}
+
+
+/* =========================================
+   DATE FORMAT
+========================================= */
+
+function formatDate(date) {
+
+    return new Date(
+        date + "T00:00:00"
+    ).toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* =========================================
+   SECURITY
+========================================= */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================================
+   INITIAL LOAD
+========================================= */
+
+renderTransactions();
+
+updateDashboard();
+
+selectType("expense");
+
+</script>
+
+</body>
+</html>
