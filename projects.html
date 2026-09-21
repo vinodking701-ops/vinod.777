@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projects | SAI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* =========================
+           PROJECT PAGE
+        ========================= */
+
+        .projects-page {
+            min-height: 100vh;
+            padding: 110px 8% 80px;
+
+            background:
+                radial-gradient(
+                    circle at 20% 30%,
+                    rgba(0, 238, 255, 0.06),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 80% 70%,
+                    rgba(0, 238, 255, 0.05),
+                    transparent 30%
+                );
+        }
+
+
+        /* =========================
+           HEADING
+        ========================= */
+
+        .projects-heading {
+            text-align: center;
+            margin-bottom: 65px;
+        }
+
+        .small-title {
+            color: #00eaff;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 18px;
+        }
+
+        .projects-heading h1 {
+            font-size: 60px;
+            margin: 0;
+            color: white;
+        }
+
+        .projects-heading h1 span {
+            color: #00eaff;
+
+            text-shadow:
+                0 0 20px rgba(0, 234, 255, 0.45);
+        }
+
+        .projects-heading p {
+            color: #888;
+            font-size: 17px;
+            max-width: 650px;
+            margin: 20px auto 0;
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           PROJECT GRID
+        ========================= */
+
+        .projects-grid {
+            max-width: 1200px;
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 30px;
+        }
+
+
+        /* =========================
+           PROJECT CARD
+        ========================= */
+
+        .project-card {
+            background: rgba(8, 18, 23, 0.95);
+
+            border: 1px solid
+                rgba(0, 234, 255, 0.10);
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            transition: 0.35s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+
+            border-color:
+                rgba(0, 234, 255, 0.5);
+
+            box-shadow:
+                0 15px 45px
+                rgba(0, 234, 255, 0.10);
+        }
+
+
+        /* =========================
+           PROJECT IMAGE
+        ========================= */
+
+        .project-image {
+            height: 210px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #07151a,
+                    #081118
+                );
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            font-size: 75px;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .project-content {
+            padding: 28px;
+        }
+
+        .project-number {
+            color: #00eaff;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 12px;
+        }
+
+        .project-content h2 {
+            color: white;
+
+            font-size: 27px;
+
+            margin:
+                0 0 12px;
+        }
+
+        .project-content p {
+            color: #888;
+
+            line-height: 1.7;
+
+            font-size: 15px;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================
+           TECHNOLOGIES
+        ========================= */
+
+        .tech-tags {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-bottom: 25px;
+        }
+
+        .tech-tags span {
+            padding:
+                6px 12px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(0, 234, 255, 0.07);
+
+            color: #00eaff;
+
+            font-size: 12px;
+
+            border:
+                1px solid
+                rgba(0, 234, 255, 0.12);
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .project-buttons {
+            display: flex;
+
+            gap: 12px;
+        }
+
+        .project-btn {
+            text-decoration: none;
+
+            padding:
+                11px 20px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+
+        /* LIVE PREVIEW */
+
+        .view-btn {
+            background: #00eaff;
+
+            color: #001014;
+        }
+
+        .view-btn:hover {
+            box-shadow:
+                0 0 20px
+                rgba(0, 234, 255, 0.4);
+        }
+
+
+        /* GITHUB */
+
+        .code-btn {
+            color: white;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.15);
+        }
+
+        .code-btn:hover {
+            border-color: #00eaff;
+
+            color: #00eaff;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-heading h1 {
+                font-size: 45px;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .projects-page {
+                padding:
+                    100px 20px 50px;
+            }
+
+            .projects-heading h1 {
+                font-size: 38px;
+            }
+
+            .project-image {
+                height: 170px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<header>
+
+    <div class="logo">
+        SAI<span>.</span>
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="about.html">
+            About
+        </a>
+
+        <a href="skills.html">
+            Skills
+        </a>
+
+        <a href="services.html">
+            Services
+        </a>
+
+        <a href="projects.html"
+           class="active">
+            Projects
+        </a>
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =========================
+     PROJECTS SECTION
+========================= -->
+
+<section class="projects-page">
+
+
+    <!-- HEADING -->
+
+    <div class="projects-heading">
+
+        <div class="small-title">
+            MY RECENT WORK
+        </div>
+
+        <h1>
+            My <span>Projects</span>
+        </h1>
+
+        <p>
+            A collection of projects I have built while
+            learning web development, programming and
+            software development.
+        </p>
+
+    </div>
+
+
+
+    <!-- PROJECT GRID -->
+
+    <div class="projects-grid">
+
+
+
+        <!-- =========================
+             PROJECT 01
+        ========================= -->
+
+        <div class="project-card">
+
+            <div class="project-image">
+                🌐
+            </div>
+
+            <div class="project-content">
+
+                <div class="project-number">
+                    PROJECT 01
+                </div>
+
+                <h2>
+                    Personal Portfolio
+                </h2>
+
+                <p>
+                    A modern responsive personal portfolio
+                    website designed to showcase my skills,
+                    services and projects.
+                </p>
+
+                <div class="tech-tags">
+
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>JavaScript</span>
+
+                </div>
+
+                <div class="project-buttons">
+
+                    <!-- PORTFOLIO OPENS DIRECTLY -->
+
+                    <a
+                        href="index.html"
+                        class="project-btn view-btn">
+
+                        Live Preview
+
+                    </a>
+
+                    <a
+                        href="#"
+                        class="project-btn code-btn">
+
+                        GitHub
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             PROJECT 02
+        ========================= -->
+
+        <div class="project-card">
+
+            <div class="project-image">
+                🛒
+            </div>
+
+            <div class="project-content">
+
+                <div class="project-number">
+                    PROJECT 02
+                </div>
+
+                <h2>
+                    E-Commerce UI
+                </h2>
+
+                <p>
+                    A professional shopping interface with
+                    product cards, modern layouts and
+                    responsive design.
+                </p>
+
+                <div class="tech-tags">
+
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>JavaScript</span>
+
+                </div>
+
+                <div class="project-buttons">
+
+                    <!-- E-COMMERCE PROJECT -->
+
+                    <a
+                        href="ecommerce/index.html"
+                        class="project-btn view-btn">
+
+                        Live Preview
+
+                    </a>
+
+                    <a
+                        href="#"
+                        class="project-btn code-btn">
+
+                        GitHub
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             PROJECT 03
+        ========================= -->
+
+        <div class="project-card">
+
+            <div class="project-image">
+                🎓
+            </div>
+
+            <div class="project-content">
+
+                <div class="project-number">
+                    PROJECT 03
+                </div>
+
+                <h2>
+                    Student Management System
+                </h2>
+
+                <p>
+                    A Flask-based application for managing
+                    student information through a simple
+                    web interface.
+                </p>
+
+                <div class="tech-tags">
+
+                    <span>Python</span>
+                    <span>Flask</span>
+                    <span>HTML</span>
+                    <span>CSS</span>
+
+                </div>
+
+                <div class="project-buttons">
+
+                    <!-- STUDENT MANAGEMENT PROJECT -->
+
+                    <a
+                        href="student-management/index.html"
+                        class="project-btn view-btn">
+
+                        Live Preview
+
+                    </a>
+
+                    <a
+                        href="#"
+                        class="project-btn code-btn">
+
+                        GitHub
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             PROJECT 04
+        ========================= -->
+
+        <div class="project-card">
+
+            <div class="project-image">
+                💰
+            </div>
+
+            <div class="project-content">
+
+                <div class="project-number">
+                    PROJECT 04
+                </div>
+
+                <h2>
+                    Expense Tracker
+                </h2>
+
+                <p>
+                    An expense tracking application for
+                    managing income, expenses and
+                    financial records.
+                </p>
+
+                <div class="tech-tags">
+
+                    <span>Python</span>
+                    <span>Flask</span>
+                    <span>HTML</span>
+                    <span>CSS</span>
+
+                </div>
+
+                <div class="project-buttons">
+
+                    <!-- EXPENSE TRACKER PROJECT -->
+
+                    <a
+                        href="expense-tracker/index.html"
+                        class="project-btn view-btn">
+
+                        Live Preview
+
+                    </a>
+
+                    <a
+                        href="#"
+                        class="project-btn code-btn">
+
+                        GitHub
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             PROJECT 05
+        ========================= -->
+
+        <div class="project-card">
+
+            <div class="project-image">
+                🧮
+            </div>
+
+            <div class="project-content">
+
+                <div class="project-number">
+                    PROJECT 05
+                </div>
+
+                <h2>
+                    Calculator
+                </h2>
+
+                <p>
+                    A clean responsive calculator with a
+                    modern interface and functional
+                    arithmetic operations.
+                </p>
+
+                <div class="tech-tags">
+
+                    <span>HTML</span>
+                    <span>CSS</span>
+                    <span>JavaScript</span>
+
+                </div>
+
+                <div class="project-buttons">
+
+                    <!-- CALCULATOR OPENS DIRECTLY -->
+
+                    <a
+                        href="calculator/index.html"
+                        class="project-btn view-btn">
+
+                        Live Preview
+
+                    </a>
+
+                    <a
+                        href="#"
+                        class="project-btn code-btn">
+
+                        GitHub
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             PROJECT 06
+        ========================= -->
+
+        <div class="project-card">
+
+            <div class="project-image">
+                🎮
+            </div>
+
+            <div class="project-content">
+
+                <div class="project-number">
+                    PROJECT 06
+                </div>
+
+                <h2>
+                    Python Game
+                </h2>
+
+                <p>
+                    A beginner-friendly Python game project
+                    created to practice programming logic
+                    and game development.
+                </p>
+
+                <div class="tech-tags">
+
+                    <span>Python</span>
+                    <span>Pygame</span>
+
+                </div>
+
+                <div class="project-buttons">
+
+                    <a
+                        href="python-game/index.html"
+                        class="project-btn view-btn">
+
+                        View Project
+
+                    </a>
+
+                    <a
+                        href="#"
+                        class="project-btn code-btn">
+
+                        GitHub
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+</body>
+
+</html>
+<a href="expense-tracker/index.html" class="project-btn view-btn">
+    Live Preview
+</a>
+<a href="student-management/index.html" class="project-btn view-btn">
+    Live Preview
+</a>
