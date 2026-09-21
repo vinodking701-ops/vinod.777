@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div>
+                <h1>Calculator</h1>
+                <p>Smart & Professional Calculator</p>
+            </div>
+
+            <button class="history-toggle" onclick="toggleHistory()">
+                History
+            </button>
+        </header>
+
+        <div class="calculator-area">
+
+            <!-- CALCULATOR -->
+            <main class="calculator">
+
+                <!-- DISPLAY -->
+                <div class="display">
+
+                    <div id="previousDisplay" class="previous">
+                        0
+                    </div>
+
+                    <div id="currentDisplay" class="current">
+                        0
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="buttons">
+
+                    <button class="function" onclick="clearCalculator()">
+                        AC
+                    </button>
+
+                    <button class="function" onclick="deleteLast()">
+                        DEL
+                    </button>
+
+                    <button class="function" onclick="percentage()">
+                        %
+                    </button>
+
+                    <button class="operator" onclick="chooseOperator('/')">
+                        ÷
+                    </button>
+
+
+                    <button onclick="appendNumber('7')">
+                        7
+                    </button>
+
+                    <button onclick="appendNumber('8')">
+                        8
+                    </button>
+
+                    <button onclick="appendNumber('9')">
+                        9
+                    </button>
+
+                    <button class="operator" onclick="chooseOperator('*')">
+                        ×
+                    </button>
+
+
+                    <button onclick="appendNumber('4')">
+                        4
+                    </button>
+
+                    <button onclick="appendNumber('5')">
+                        5
+                    </button>
+
+                    <button onclick="appendNumber('6')">
+                        6
+                    </button>
+
+                    <button class="operator" onclick="chooseOperator('-')">
+                        −
+                    </button>
+
+
+                    <button onclick="appendNumber('1')">
+                        1
+                    </button>
+
+                    <button onclick="appendNumber('2')">
+                        2
+                    </button>
+
+                    <button onclick="appendNumber('3')">
+                        3
+                    </button>
+
+                    <button class="operator" onclick="chooseOperator('+')">
+                        +
+                    </button>
+
+
+                    <button class="zero" onclick="appendNumber('0')">
+                        0
+                    </button>
+
+                    <button onclick="appendDecimal()">
+                        .
+                    </button>
+
+                    <button class="equals" onclick="calculate()">
+                        =
+                    </button>
+
+                </div>
+
+            </main>
+
+
+            <!-- HISTORY -->
+            <aside id="historyPanel" class="history-panel">
+
+                <div class="history-header">
+                    <h2>Calculation History</h2>
+
+                    <button onclick="clearHistory()">
+                        Clear
+                    </button>
+                </div>
+
+                <div id="historyList" class="history-list">
+                    <div class="empty-history">
+                        No calculations yet
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+
+        <footer>
+            <span>Pro Calculator</span>
+            <span>•</span>
+            <span>Keyboard Supported</span>
+        </footer>
+
+    </div>
+
+    <script>
+
+        let current = "0";
+        let previous = "";
+        let operator = null;
+        let shouldReset = false;
+
+        let history =
+            JSON.parse(localStorage.getItem("calculatorHistory")) || [];
+
+
+        const currentDisplay =
+            document.getElementById("currentDisplay");
+
+        const previousDisplay =
+            document.getElementById("previousDisplay");
+
+
+        function updateDisplay() {
+
+            currentDisplay.textContent = current;
+
+            if (operator && previous !== "") {
+
+                let symbol = operator;
+
+                if (operator === "*") symbol = "×";
+                if (operator === "/") symbol = "÷";
+                if (operator === "-") symbol = "−";
+
+                previousDisplay.textContent =
+                    previous + " " + symbol;
+
+            } else {
+
+                previousDisplay.textContent = "";
+
+            }
+        }
+
+
+        function appendNumber(number) {
+
+            if (current === "Error") {
+                clearCalculator();
+            }
+
+            if (shouldReset) {
+
+                current = number;
+                shouldReset = false;
+
+            } else {
+
+                if (current === "0") {
+
+                    current = number;
+
+                } else {
+
+                    current += number;
+
+                }
+
+            }
+
+            updateDisplay();
+        }
+
+
+        function appendDecimal() {
+
+            if (shouldReset) {
+
+                current = "0.";
+                shouldReset = false;
+
+            } else if (!current.includes(".")) {
+
+                current += ".";
+
+            }
+
+            updateDisplay();
+        }
+
+
+        function chooseOperator(selectedOperator) {
+
+            if (current === "Error") return;
+
+            if (operator !== null && !shouldReset) {
+                calculate();
+            }
+
+            previous = current;
+            operator = selectedOperator;
+            shouldReset = true;
+
+            updateDisplay();
+        }
+
+
+        function calculate() {
+
+            if (
+                operator === null ||
+                previous === "" ||
+                current === ""
+            ) {
+                return;
+            }
+
+            const first = parseFloat(previous);
+            const second = parseFloat(current);
+
+            let result;
+
+            switch (operator) {
+
+                case "+":
+                    result = first + second;
+                    break;
+
+                case "-":
+                    result = first - second;
+                    break;
+
+                case "*":
+                    result = first * second;
+                    break;
+
+                case "/":
+
+                    if (second === 0) {
+
+                        current = "Error";
+                        previous = "";
+                        operator = null;
+                        updateDisplay();
+
+                        showError();
+
+                        return;
+                    }
+
+                    result = first / second;
+                    break;
+            }
+
+            result = Number(result.toFixed(10));
+
+            addHistory(
+                `${formatNumber(first)} ${displayOperator(operator)} ${formatNumber(second)}`,
+                formatNumber(result)
+            );
+
+            current = String(result);
+            previous = "";
+            operator = null;
+            shouldReset = true;
+
+            updateDisplay();
+        }
+
+
+        function clearCalculator() {
+
+            current = "0";
+            previous = "";
+            operator = null;
+            shouldReset = false;
+
+            updateDisplay();
+        }
+
+
+        function deleteLast() {
+
+            if (shouldReset || current === "Error") {
+                return;
+            }
+
+            if (current.length === 1) {
+
+                current = "0";
+
+            } else {
+
+                current = current.slice(0, -1);
+
+            }
+
+            updateDisplay();
+        }
+
+
+        function percentage() {
+
+            if (current === "Error") return;
+
+            const value = parseFloat(current);
+
+            current = String(value / 100);
+
+            updateDisplay();
+        }
+
+
+        function displayOperator(op) {
+
+            if (op === "*") return "×";
+            if (op === "/") return "÷";
+            if (op === "-") return "−";
+
+            return op;
+        }
+
+
+        function formatNumber(number) {
+
+            return Number(number).toLocaleString(
+                "en-IN",
+                {
+                    maximumFractionDigits: 10
+                }
+            );
+        }
+
+
+        function addHistory(expression, result) {
+
+            history.unshift({
+                expression: expression,
+                result: result
+            });
+
+            if (history.length > 20) {
+                history.pop();
+            }
+
+            localStorage.setItem(
+                "calculatorHistory",
+                JSON.stringify(history)
+            );
+
+            renderHistory();
+        }
+
+
+        function renderHistory() {
+
+            const list =
+                document.getElementById("historyList");
+
+            if (history.length === 0) {
+
+                list.innerHTML = `
+                    <div class="empty-history">
+                        No calculations yet
+                    </div>
+                `;
+
+                return;
+            }
+
+            list.innerHTML = history.map((item, index) => {
+
+                return `
+                    <div class="history-item">
+
+                        <div class="history-expression">
+                            ${item.expression}
+                        </div>
+
+                        <div class="history-result">
+                            = ${item.result}
+                        </div>
+
+                        <button
+                            class="use-result"
+                            onclick="useHistoryResult(${index})">
+                            Use
+                        </button>
+
+                    </div>
+                `;
+
+            }).join("");
+        }
+
+
+        function useHistoryResult(index) {
+
+            current = history[index].result;
+            previous = "";
+            operator = null;
+            shouldReset = false;
+
+            updateDisplay();
+        }
+
+
+        function clearHistory() {
+
+            history = [];
+
+            localStorage.removeItem(
+                "calculatorHistory"
+            );
+
+            renderHistory();
+        }
+
+
+        function toggleHistory() {
+
+            const panel =
+                document.getElementById("historyPanel");
+
+            panel.classList.toggle("show");
+
+        }
+
+
+        function showError() {
+
+            currentDisplay.classList.add("error");
+
+            setTimeout(() => {
+
+                currentDisplay.classList.remove("error");
+
+            }, 500);
+
+        }
+
+
+        /* KEYBOARD SUPPORT */
+
+        document.addEventListener("keydown", function(event) {
+
+            const key = event.key;
+
+            if (
+                key >= "0" &&
+                key <= "9"
+            ) {
+
+                appendNumber(key);
+
+            }
+
+            else if (key === ".") {
+
+                appendDecimal();
+
+            }
+
+            else if (
+                key === "+" ||
+                key === "-" ||
+                key === "*" ||
+                key === "/"
+            ) {
+
+                chooseOperator(key);
+
+            }
+
+            else if (key === "Enter" || key === "=") {
+
+                event.preventDefault();
+
+                calculate();
+
+            }
+
+            else if (key === "Backspace") {
+
+                deleteLast();
+
+            }
+
+            else if (key === "Escape") {
+
+                clearCalculator();
+
+            }
+
+            else if (key === "%") {
+
+                percentage();
+
+            }
+
+        });
+
+
+        renderHistory();
+        updateDisplay();
+
+    </script>
+
+</body>
+</html>
